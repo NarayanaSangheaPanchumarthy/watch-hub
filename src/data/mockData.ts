@@ -170,6 +170,111 @@ export const countries: Country[] = [
 
 export const allContent = [...trendingMovies, ...trendingShows];
 
+// Additional movies for listings
+export const allMovies: Movie[] = [
+  ...trendingMovies,
+  {
+    id: "m7", title: "Neon Requiem", year: 2024, rating: 7.2, genres: ["Action", "Sci-Fi"],
+    poster: "https://images.unsplash.com/photo-1518676590747-1e3dcf5a2e45?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1518676590747-1e3dcf5a2e45?w=1920&h=800&fit=crop",
+    overview: "A rogue AI enlists a former hacker to prevent its own destruction.",
+    runtime: "1h 52min", type: "movie", certification: "R", director: "Kai Nakamura",
+    cast: placeholderCast, providers: [providers[0], providers[2]],
+  },
+  {
+    id: "m8", title: "The Garden of Bones", year: 2023, rating: 8.3, genres: ["Horror", "Mystery"],
+    poster: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&h=800&fit=crop",
+    overview: "An archaeologist unearths a forbidden burial ground beneath a sleepy English village.",
+    runtime: "2h 01min", type: "movie", certification: "R", director: "Fiona Blackwood",
+    cast: placeholderCast, providers: [providers[1]],
+  },
+  {
+    id: "m9", title: "Parallel Lines", year: 2025, rating: 6.8, genres: ["Drama", "Romance"],
+    poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1920&h=800&fit=crop",
+    overview: "Two strangers keep crossing paths in different cities, connected by an invisible thread.",
+    runtime: "1h 48min", type: "movie", certification: "PG-13", director: "Lena Moretti",
+    cast: placeholderCast, providers: [providers[2], providers[3]],
+  },
+  {
+    id: "m10", title: "Iron Summit", year: 2024, rating: 7.7, genres: ["Action", "Adventure"],
+    poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1920&h=800&fit=crop",
+    overview: "A mountaineering expedition becomes a fight for survival when a hidden military base is discovered.",
+    runtime: "2h 14min", type: "movie", certification: "PG-13", director: "David Okafor",
+    cast: placeholderCast, providers: [providers[0], providers[4]],
+  },
+  {
+    id: "m11", title: "Sotto Voce", year: 2023, rating: 8.9, genres: ["Drama", "Music"],
+    poster: "https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=1920&h=800&fit=crop",
+    overview: "A deaf composer creates a revolutionary symphony through vibrations and technology.",
+    runtime: "2h 20min", type: "movie", certification: "PG", director: "Ava Lin",
+    cast: placeholderCast, providers: [providers[1], providers[2]],
+  },
+  {
+    id: "m12", title: "Cold Pursuit", year: 2025, rating: 6.5, genres: ["Thriller", "Crime"],
+    poster: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=1920&h=800&fit=crop",
+    overview: "A retired detective is pulled back into the underworld when her daughter goes missing.",
+    runtime: "1h 55min", type: "movie", certification: "R", director: "Marcus Cole",
+    cast: placeholderCast, providers: [providers[0], providers[3]],
+  },
+];
+
+export const allShows: Movie[] = [
+  ...trendingShows,
+  {
+    id: "tv-6", title: "Glass Houses", year: 2025, rating: 8.2, genres: ["Drama", "Thriller"],
+    poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1920&h=800&fit=crop",
+    overview: "A wealthy family's secrets unravel when a reality show films inside their estate.",
+    runtime: "52min", type: "tv", seasons: 1, certification: "TV-MA",
+    cast: placeholderCast, providers: [providers[0], providers[1]],
+  },
+  {
+    id: "tv-7", title: "The Lighthouse", year: 2024, rating: 7.9, genres: ["Horror", "Mystery"],
+    poster: "https://images.unsplash.com/photo-1534809027769-b00d750a6bac?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1534809027769-b00d750a6bac?w=1920&h=800&fit=crop",
+    overview: "A keeper at a remote lighthouse begins receiving impossible transmissions from the dead.",
+    runtime: "42min", type: "tv", seasons: 2, certification: "TV-MA",
+    cast: placeholderCast, providers: [providers[2]],
+  },
+  {
+    id: "tv-8", title: "Codec", year: 2025, rating: 8.6, genres: ["Sci-Fi", "Thriller"],
+    poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920&h=800&fit=crop",
+    overview: "Programmers discover their code is rewriting reality itself.",
+    runtime: "48min", type: "tv", seasons: 1, certification: "TV-14",
+    cast: placeholderCast, providers: [providers[1], providers[0]],
+  },
+  {
+    id: "tv-9", title: "Kindred Spirits", year: 2023, rating: 7.3, genres: ["Fantasy", "Romance"],
+    poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&h=800&fit=crop",
+    overview: "Soulmates across different timelines must find each other before the connection fades.",
+    runtime: "50min", type: "tv", seasons: 3, certification: "TV-PG",
+    cast: placeholderCast, providers: [providers[2], providers[3]],
+  },
+  {
+    id: "tv-10", title: "Frontline", year: 2024, rating: 9.0, genres: ["Crime", "Drama"],
+    poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=300&h=450&fit=crop",
+    backdrop: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=1920&h=800&fit=crop",
+    overview: "Undercover officers navigate corruption within their own department.",
+    runtime: "55min", type: "tv", seasons: 2, certification: "TV-MA",
+    cast: placeholderCast, providers: [providers[0]],
+  },
+];
+
+export const allGenres = [
+  "Action", "Adventure", "Comedy", "Crime", "Drama", "Fantasy",
+  "History", "Horror", "Music", "Mystery", "Romance", "Sci-Fi", "Thriller",
+];
+
+export const allProviderNames = ["Netflix", "Prime Video", "Disney+", "Apple TV+", "Google Play"];
+export const allYears = [2025, 2024, 2023];
+
 export interface Author {
   id: string;
   name: string;
