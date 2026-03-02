@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, User, Film, Tv, Trophy } from "lucide-react";
+import { Search, Menu, X, User, Film, Tv, Trophy, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { label: "Movies", path: "/movies", icon: Film },
   { label: "TV Shows", path: "/shows", icon: Tv },
   { label: "Sports", path: "/sports", icon: Trophy },
+  { label: "Blog", path: "/blog", icon: BookOpen },
 ];
 
 const Navbar = () => {
