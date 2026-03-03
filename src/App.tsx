@@ -9,6 +9,7 @@ import ContentListingPage from "./pages/ContentListingPage";
 import BlogList from "./pages/BlogList";
 import BlogDetail from "./pages/BlogDetail";
 import AuthorPage from "./pages/AuthorPage";
+import SportsPage from "./pages/SportsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/movies" element={<ContentListingPage type="movie" />} />
           <Route path="/shows" element={<ContentListingPage type="tv" />} />
+          <Route path="/sports" element={<SportsPage />} />
           <Route path="/title/:id" element={<ContentDetail />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
