@@ -231,7 +231,7 @@ export const allShows: Movie[] = Array.from({ length: 100 }, (_, i) => generateS
 // Keep first 6 as trending for homepage carousels
 export const trendingMovies = allMovies.slice(0, 6);
 export const trendingShows = allShows.slice(0, 6);
-export const allContent = [...trendingMovies, ...trendingShows];
+export const allContent = [...allMovies, ...allShows];
 
 export const countries: Country[] = [
   { name: "United States", code: "US", flag: "🇺🇸" },
