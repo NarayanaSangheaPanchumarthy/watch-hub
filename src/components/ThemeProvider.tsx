@@ -19,9 +19,6 @@ export const ThemeProvider = ({ children, defaultTheme = "dark" }: { children: R
   });
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
@@ -29,7 +26,9 @@ export const ThemeProvider = ({ children, defaultTheme = "dark" }: { children: R
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      {children}
+      <div className={theme} style={{ minHeight: "100vh" }}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
