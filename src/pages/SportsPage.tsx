@@ -1,29 +1,35 @@
 import { useState } from "react";
-import { Trophy, CheckCircle2, Calendar, Radio } from "lucide-react";
+import { Trophy, CheckCircle2, Calendar, Radio, RefreshCw, Wifi } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GameCard from "@/components/sports/GameCard";
 import HighlightsSection from "@/components/sports/HighlightsSection";
-import { sportsGames, sportsList, featuredHighlights } from "@/data/sportsData";
+import { sportsList, featuredHighlights } from "@/data/sportsData";
+import { useLiveScores } from "@/hooks/useLiveScores";
 
 const SportsPage = () => {
   const [selectedSport, setSelectedSport] = useState("All");
   const [activeTab, setActiveTab] = useState<"live" | "scheduled" | "results">("live");
 
+  const { games, isLoading, lastUpdated, source, refetch } = useLiveScores({
+    sport: selectedSport,
+    pollInterval: 60000, // refresh every 60s
+  });
+
   const statusMap = { live: "live", scheduled: "scheduled", results: "finished" } as const;
 
-  const filteredGames = sportsGames.filter((g) => {
+  const filteredGames = games.filter((g) => {
     const sportMatch = selectedSport === "All" || g.sport === selectedSport;
     return sportMatch && g.status === statusMap[activeTab];
   });
 
-  const liveCounts = sportsGames.filter((g) => g.status === "live").length;
+  const liveCounts = games.filter((g) => g.status === "live").length;
 
   const getCount = (sport: string) => {
     const status = statusMap[activeTab];
-    if (sport === "All") return sportsGames.filter((g) => g.status === status).length;
-    return sportsGames.filter((g) => g.sport === sport && g.status === status).length;
+    if (sport === "All") return games.filter((g) => g.status === status).length;
+    return games.filter((g) => g.sport === sport && g.status === status).length;
   };
 
   return (
@@ -37,11 +43,33 @@ const SportsPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-6"
           >
-            <div className="flex items-center gap-2 mb-1">
-              <Trophy className="w-6 h-6 text-primary" />
-              <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground">
-                Sports Hub
-              </h1>
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <Trophy className="w-6 h-6 text-primary" />
+                <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+                  Sports Hub
+                </h1>
+              </div>
+              <div className="flex items-center gap-3">
+                {/* Data source indicator */}
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Wifi className={`w-3 h-3 ${source === "api-football" ? "text-green-500" : "text-muted-foreground"}`} />
+                  <span>{source === "api-football" ? "Live API" : "Demo Data"}</span>
+                </div>
+                {lastUpdated && (
+                  <span className="text-[10px] text-muted-foreground">
+                    Updated {lastUpdated.toLocaleTimeString()}
+                  </span>
+                )}
+                <button
+                  onClick={refetch}
+                  disabled={isLoading}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                  title="Refresh scores"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+                </button>
+              </div>
             </div>
             <p className="text-muted-foreground text-sm">
               Live scores, schedules, results &amp; video highlights — Cricket, Soccer, Football, NBA, Tennis, F1 &amp; more
@@ -120,8 +148,16 @@ const SportsPage = () => {
             ))}
           </motion.div>
 
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="text-center py-4 text-sm text-muted-foreground">
+              <RefreshCw className="w-4 h-4 animate-spin inline mr-2" />
+              Fetching latest scores...
+            </div>
+          )}
+
           {/* Games list */}
-          {filteredGames.length === 0 ? (
+          {filteredGames.length === 0 && !isLoading ? (
             <div className="text-center py-20">
               <p className="text-muted-foreground text-lg mb-1">No games found</p>
               <p className="text-muted-foreground text-sm">
