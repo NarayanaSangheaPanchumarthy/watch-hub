@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Film, Tv, Star, LayoutGrid, List } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,6 +13,8 @@ interface ContentListingPageProps {
   type: "movie" | "tv";
 }
 
+const ITEMS_PER_PAGE = 24;
+
 const ContentListingPage = ({ type }: ContentListingPageProps) => {
   const items = type === "movie" ? allMovies : allShows;
   const title = type === "movie" ? "Movies" : "TV Shows";
@@ -24,6 +26,7 @@ const ContentListingPage = ({ type }: ContentListingPageProps) => {
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState<"rating" | "year" | "title">("rating");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const activeFilterCount =
     selectedGenres.length +
@@ -59,6 +62,18 @@ const ContentListingPage = ({ type }: ContentListingPageProps) => {
 
     return result;
   }, [items, selectedGenres, selectedYear, selectedProvider, minRating, sortBy]);
+
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [selectedGenres, selectedYear, selectedProvider, minRating, sortBy]);
+
+  const visibleItems = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const hasMore = visibleCount < filtered.length;
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => Math.min(prev + ITEMS_PER_PAGE, filtered.length));
+  }, [filtered.length]);
 
   const clearAll = () => {
     setSelectedGenres([]);
@@ -160,31 +175,37 @@ const ContentListingPage = ({ type }: ContentListingPageProps) => {
               </button>
             </div>
           ) : viewMode === "grid" ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filtered.map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <GridCard item={item} />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {visibleItems.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: Math.min(i % ITEMS_PER_PAGE, 12) * 0.02 }}
+                  >
+                    <GridCard item={item} />
+                  </motion.div>
+                ))}
+              </div>
+              {hasMore && <LoadMoreButton onClick={loadMore} remaining={filtered.length - visibleCount} />}
+            </>
           ) : (
-            <div className="space-y-3">
-              {filtered.map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: -15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <ListCard item={item} />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="space-y-3">
+                {visibleItems.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: Math.min(i % ITEMS_PER_PAGE, 12) * 0.02 }}
+                  >
+                    <ListCard item={item} />
+                  </motion.div>
+                ))}
+              </div>
+              {hasMore && <LoadMoreButton onClick={loadMore} remaining={filtered.length - visibleCount} />}
+            </>
           )}
         </div>
       </main>
@@ -270,6 +291,17 @@ const ListCard = ({ item }: { item: Movie }) => (
       </div>
     </div>
   </Link>
+);
+
+const LoadMoreButton = ({ onClick, remaining }: { onClick: () => void; remaining: number }) => (
+  <div className="flex justify-center pt-10 pb-4">
+    <button
+      onClick={onClick}
+      className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
+    >
+      Load More ({remaining} remaining)
+    </button>
+  </div>
 );
 
 export default ContentListingPage;
