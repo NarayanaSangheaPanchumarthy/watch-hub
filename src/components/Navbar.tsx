@@ -1,14 +1,16 @@
 import { useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, Film, Tv, Trophy, BookOpen } from "lucide-react";
+import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import GlobalSearch from "@/components/GlobalSearch";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useWatchlist } from "@/contexts/WatchlistContext";
 
 const navLinks = [
   { label: "Movies", path: "/movies", icon: Film },
   { label: "TV Shows", path: "/shows", icon: Tv },
   { label: "Sports", path: "/sports", icon: Trophy },
+  { label: "Watchlist", path: "/watchlist", icon: Bookmark },
   { label: "Blog", path: "/blog", icon: BookOpen },
 ];
 

@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { WatchlistProvider } from "@/contexts/WatchlistContext";
 import Index from "./pages/Index";
 import ContentDetail from "./pages/ContentDetail";
 import ContentListingPage from "./pages/ContentListingPage";
@@ -11,6 +12,7 @@ import BlogList from "./pages/BlogList";
 import BlogDetail from "./pages/BlogDetail";
 import AuthorPage from "./pages/AuthorPage";
 import SportsPage from "./pages/SportsPage";
+import WatchlistPage from "./pages/WatchlistPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -18,6 +20,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="dark">
+    <WatchlistProvider>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -27,6 +30,7 @@ const App = () => (
           <Route path="/movies" element={<ContentListingPage type="movie" />} />
           <Route path="/shows" element={<ContentListingPage type="tv" />} />
           <Route path="/sports" element={<SportsPage />} />
+          <Route path="/watchlist" element={<WatchlistPage />} />
           <Route path="/title/:id" element={<ContentDetail />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
@@ -35,6 +39,7 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
+    </WatchlistProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
