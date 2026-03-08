@@ -250,6 +250,7 @@ function generateShow(i: number): Movie {
     certification: certifications[3 + Math.floor(rng() * 3)],
     cast: placeholderCast,
     providers: p,
+    trailerKey: trailerKeys[(i + 7) % trailerKeys.length],
   };
 }
 
