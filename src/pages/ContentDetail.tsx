@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -21,7 +21,15 @@ const episodes = [
 
 const ContentDetail = () => {
   const { id } = useParams();
-  const item = allContent.find((c) => c.id === id);
+  const normalizedId = id?.trim() ?? "";
+  const item = allContent.find((c) => {
+    if (!normalizedId) return false;
+    if (c.id === normalizedId) return true;
+    if (/^\d+$/.test(normalizedId)) {
+      return c.id === `m-${normalizedId}` || c.id === `tv-${normalizedId}`;
+    }
+    return false;
+  });
   const [activeTab, setActiveTab] = useState<"stream" | "rent" | "buy">("stream");
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [activeSeason, setActiveSeason] = useState(1);
@@ -30,7 +38,7 @@ const ContentDetail = () => {
   if (!item) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Content not found</p>
+        <p className="text-muted-foreground">Content not found. Try /title/m-1 or open from Movies/Shows.</p>
       </div>
     );
   }
