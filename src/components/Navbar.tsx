@@ -60,9 +60,7 @@ const Navbar = () => {
                 /
               </kbd>
             </button>
-            <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
-              <User className="w-5 h-5" />
-            </button>
+            <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="p-2 rounded-lg text-muted-foreground hover:text-foreground md:hidden"
