@@ -13,6 +13,8 @@ interface ContentListingPageProps {
   type: "movie" | "tv";
 }
 
+const ITEMS_PER_PAGE = 24;
+
 const ContentListingPage = ({ type }: ContentListingPageProps) => {
   const items = type === "movie" ? allMovies : allShows;
   const title = type === "movie" ? "Movies" : "TV Shows";
@@ -24,6 +26,7 @@ const ContentListingPage = ({ type }: ContentListingPageProps) => {
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState<"rating" | "year" | "title">("rating");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const activeFilterCount =
     selectedGenres.length +
@@ -59,6 +62,18 @@ const ContentListingPage = ({ type }: ContentListingPageProps) => {
 
     return result;
   }, [items, selectedGenres, selectedYear, selectedProvider, minRating, sortBy]);
+
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [selectedGenres, selectedYear, selectedProvider, minRating, sortBy]);
+
+  const visibleItems = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const hasMore = visibleCount < filtered.length;
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => Math.min(prev + ITEMS_PER_PAGE, filtered.length));
+  }, [filtered.length]);
 
   const clearAll = () => {
     setSelectedGenres([]);
