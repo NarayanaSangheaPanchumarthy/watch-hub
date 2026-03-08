@@ -217,7 +217,7 @@ function generateMovie(i: number): Movie {
     director: directors[Math.floor(rng() * directors.length)],
     cast: placeholderCast,
     providers: p,
-    trailerKey: i < 3 ? "dQw4w9WgXcQ" : undefined,
+    trailerKey: trailerKeys[i % trailerKeys.length],
   };
 }
 
