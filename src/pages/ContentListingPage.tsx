@@ -175,31 +175,37 @@ const ContentListingPage = ({ type }: ContentListingPageProps) => {
               </button>
             </div>
           ) : viewMode === "grid" ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filtered.map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <GridCard item={item} />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {visibleItems.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: Math.min(i % ITEMS_PER_PAGE, 12) * 0.02 }}
+                  >
+                    <GridCard item={item} />
+                  </motion.div>
+                ))}
+              </div>
+              {hasMore && <LoadMoreButton onClick={loadMore} remaining={filtered.length - visibleCount} />}
+            </>
           ) : (
-            <div className="space-y-3">
-              {filtered.map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: -15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <ListCard item={item} />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="space-y-3">
+                {visibleItems.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: Math.min(i % ITEMS_PER_PAGE, 12) * 0.02 }}
+                  >
+                    <ListCard item={item} />
+                  </motion.div>
+                ))}
+              </div>
+              {hasMore && <LoadMoreButton onClick={loadMore} remaining={filtered.length - visibleCount} />}
+            </>
           )}
         </div>
       </main>
