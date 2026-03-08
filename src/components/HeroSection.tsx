@@ -1,13 +1,16 @@
 import { Play, Info, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
     <section className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
       <div className="absolute inset-0">
-        <img src={heroBg} alt="Hero" className="w-full h-full object-cover" />
+        <img
+          src="https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg"
+          alt="Dune: Part Two"
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/20" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/80 to-transparent" />
       </div>
@@ -25,33 +28,33 @@ const HeroSection = () => {
             </span>
             <span className="flex items-center gap-1 text-sm text-muted-foreground">
               <Star className="w-4 h-4 fill-primary text-primary" />
-              <span className="text-foreground font-semibold">9.1</span>/10
+              <span className="text-foreground font-semibold">8.6</span>/10
             </span>
           </div>
           <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground leading-tight mb-4">
-            Echoes of Tomorrow
+            Dune: Part Two
           </h1>
           <p className="text-muted-foreground text-lg mb-6 line-clamp-2">
-            A woman discovers she can communicate with her future self, leading to impossible choices 
-            that could save — or doom — everyone she loves.
+            Paul Atreides unites with the Fremen to seek revenge against the conspirators who destroyed 
+            his family, facing a choice between love and the fate of the universe.
           </p>
           <div className="flex items-center gap-3 mb-6">
             <span className="text-sm text-muted-foreground">2024</span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground" />
-            <span className="text-sm text-muted-foreground">2h 15min</span>
+            <span className="text-sm text-muted-foreground">2h 46min</span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground" />
             <span className="px-2 py-0.5 rounded border border-border text-xs text-muted-foreground">PG-13</span>
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to="/title/m-3"
+              to="/title/m-2"
               className="flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors glow-accent"
             >
               <Play className="w-5 h-5" />
               Watch Now
             </Link>
             <Link
-              to="/title/m-3"
+              to="/title/m-2"
               className="flex items-center gap-2 px-6 py-3 rounded-lg bg-secondary text-secondary-foreground font-semibold hover:bg-secondary/80 transition-colors"
             >
               <Info className="w-5 h-5" />
