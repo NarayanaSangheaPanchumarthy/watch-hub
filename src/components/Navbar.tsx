@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, User, Film, Tv, Trophy, BookOpen } from "lucide-react";
+import { Search, Menu, X, Film, Tv, Trophy, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import GlobalSearch from "@/components/GlobalSearch";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { label: "Movies", path: "/movies", icon: Film },
@@ -59,9 +60,7 @@ const Navbar = () => {
                 /
               </kbd>
             </button>
-            <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
-              <User className="w-5 h-5" />
-            </button>
+            <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="p-2 rounded-lg text-muted-foreground hover:text-foreground md:hidden"
