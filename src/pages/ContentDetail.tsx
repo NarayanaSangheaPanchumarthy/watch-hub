@@ -8,6 +8,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContentCard from "@/components/ContentCard";
+import { useWatchlist } from "@/contexts/WatchlistContext";
 import { allContent, trendingMovies } from "@/data/mockData";
 
 const episodes = [
@@ -24,6 +25,7 @@ const ContentDetail = () => {
   const [activeTab, setActiveTab] = useState<"stream" | "rent" | "buy">("stream");
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [activeSeason, setActiveSeason] = useState(1);
+  const { isInWatchlist, toggleWatchlist } = useWatchlist();
 
   if (!item) {
     return (
@@ -143,8 +145,16 @@ const ContentDetail = () => {
                   <Play className="w-5 h-5" /> Watch Trailer
                 </button>
               )}
-              <button className="flex items-center gap-2 px-4 py-3 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors">
-                <BookmarkPlus className="w-5 h-5" /> Watchlist
+              <button
+                onClick={() => toggleWatchlist(item.id)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-colors ${
+                  isInWatchlist(item.id)
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                <BookmarkPlus className="w-5 h-5" />
+                {isInWatchlist(item.id) ? "In Watchlist" : "Watchlist"}
               </button>
               <button className="p-3 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors">
                 <Heart className="w-5 h-5" />
