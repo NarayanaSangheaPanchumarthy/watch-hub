@@ -1,4 +1,5 @@
 import { Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTASection = () => (
   <section className="py-16">
@@ -15,9 +16,12 @@ const CTASection = () => (
           <p className="text-muted-foreground mb-6">
             Track your watchlist across all platforms. Get alerts when your favorites become available.
           </p>
-          <button className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors glow-accent">
+          <Link
+            to="/auth"
+            className="inline-block px-8 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors glow-accent"
+          >
             Create Free Account
-          </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -13,6 +13,8 @@ import BlogDetail from "./pages/BlogDetail";
 import AuthorPage from "./pages/AuthorPage";
 import SportsPage from "./pages/SportsPage";
 import WatchlistPage from "./pages/WatchlistPage";
+import AuthPage from "./pages/AuthPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +33,8 @@ const App = () => (
           <Route path="/shows" element={<ContentListingPage type="tv" />} />
           <Route path="/sports" element={<SportsPage />} />
           <Route path="/watchlist" element={<WatchlistPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/title/:id" element={<ContentDetail />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
