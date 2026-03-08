@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, User, Film, Tv, Trophy, BookOpen } from "lucide-react";
+import { Search, Menu, X, Film, Tv, Trophy, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import GlobalSearch from "@/components/GlobalSearch";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { label: "Movies", path: "/movies", icon: Film },
