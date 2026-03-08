@@ -25,6 +25,7 @@ const ContentDetail = () => {
   const [activeTab, setActiveTab] = useState<"stream" | "rent" | "buy">("stream");
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [activeSeason, setActiveSeason] = useState(1);
+  const { isInWatchlist, toggleWatchlist } = useWatchlist();
 
   if (!item) {
     return (
