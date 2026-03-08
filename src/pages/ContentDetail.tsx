@@ -8,6 +8,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContentCard from "@/components/ContentCard";
+import { useWatchlist } from "@/contexts/WatchlistContext";
 import { allContent, trendingMovies } from "@/data/mockData";
 
 const episodes = [
