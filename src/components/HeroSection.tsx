@@ -44,7 +44,7 @@ const HeroSection = () => {
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to="/title/3"
+              to="/title/m-3"
               className="flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors glow-accent"
             >
               <Play className="w-5 h-5" />
