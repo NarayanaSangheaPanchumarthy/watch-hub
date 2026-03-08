@@ -13,6 +13,8 @@ import BlogDetail from "./pages/BlogDetail";
 import AuthorPage from "./pages/AuthorPage";
 import SportsPage from "./pages/SportsPage";
 import WatchlistPage from "./pages/WatchlistPage";
+import AuthPage from "./pages/AuthPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
