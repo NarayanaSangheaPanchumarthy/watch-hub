@@ -1,10 +1,17 @@
-import { useState, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark, User, LogOut, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 import GlobalSearch from "@/components/GlobalSearch";
 import ThemeToggle from "@/components/ThemeToggle";
-// Watchlist link is in navLinks below
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { label: "Movies", path: "/movies", icon: Film },
@@ -17,9 +24,26 @@ const navLinks = [
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [user, setUser] = useState<null | { email?: string }>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const closeSearch = useCallback(() => setSearchOpen(false), []);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   return (
     <>
@@ -63,6 +87,39 @@ const Navbar = () => {
               </kbd>
             </button>
             <ThemeToggle />
+
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                    <User className="w-5 h-5" />
+                    <span className="hidden sm:inline text-sm max-w-[120px] truncate">
+                      {user.email}
+                    </span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5">
+                    <p className="text-sm font-medium text-foreground">Signed in as</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive cursor-pointer">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                to="/auth"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                <LogIn className="w-4 h-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </Link>
+            )}
+
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="p-2 rounded-lg text-muted-foreground hover:text-foreground md:hidden"
@@ -92,13 +149,31 @@ const Navbar = () => {
                     {link.label}
                   </Link>
                 ))}
+                {!user && (
+                  <Link
+                    to="/auth"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    <LogIn className="w-5 h-5" />
+                    Sign In
+                  </Link>
+                )}
+                {user && (
+                  <button
+                    onClick={() => { handleSignOut(); setMobileOpen(false); }}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors text-left"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    Sign Out
+                  </button>
+                )}
               </nav>
             </motion.div>
           )}
         </AnimatePresence>
       </header>
 
-      {/* Global Search Overlay */}
       <AnimatePresence>
         {searchOpen && <GlobalSearch onClose={closeSearch} />}
       </AnimatePresence>
