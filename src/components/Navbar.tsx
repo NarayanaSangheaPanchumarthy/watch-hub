@@ -4,7 +4,7 @@ import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark } from "lucide-re
 import { motion, AnimatePresence } from "framer-motion";
 import GlobalSearch from "@/components/GlobalSearch";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useWatchlist } from "@/contexts/WatchlistContext";
+// Watchlist link is in navLinks below
 
 const navLinks = [
   { label: "Movies", path: "/movies", icon: Film },
