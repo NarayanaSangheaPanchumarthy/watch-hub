@@ -51,7 +51,7 @@ const HeroSection = () => {
               Watch Now
             </Link>
             <Link
-              to="/title/3"
+              to="/title/m-3"
               className="flex items-center gap-2 px-6 py-3 rounded-lg bg-secondary text-secondary-foreground font-semibold hover:bg-secondary/80 transition-colors"
             >
               <Info className="w-5 h-5" />
