@@ -133,6 +133,35 @@ const years = [2023, 2024, 2025, 2026];
 const runtimes = ["1h 32min", "1h 45min", "1h 52min", "1h 58min", "2h 01min", "2h 05min", "2h 10min", "2h 14min", "2h 20min", "2h 28min", "2h 32min", "2h 40min"];
 const tvRuntimes = ["28min", "35min", "42min", "45min", "48min", "50min", "52min", "55min", "58min", "60min"];
 
+// Real YouTube trailer IDs for popular movies/shows
+const trailerKeys = [
+  "u9Mv98Gr5pY", // Tenet
+  "YoHD9XEInc0", // Inception
+  "TcMBFSGVi1c", // Avengers Endgame
+  "8g18jFHCLXk", // Interstellar
+  "zSWdZVtXT7E", // Dark Knight
+  "JfVOs4VSpmA", // Blade Runner 2049
+  "6ZfuNTqbHE8", // Dune
+  "w7pYhpJaJW8", // Oppenheimer
+  "giXco2jaZ_4", // Mad Max Fury Road
+  "EXeTwQWrcwY", // The Matrix
+  "FtSd844cI7U", // Joker
+  "DzfpyUB60YY", // Guardians of the Galaxy
+  "hA6hldpSTF8", // John Wick
+  "sY1S34973zA", // Top Gun Maverick
+  "ByXuk9QqQkk", // The Batman
+  "ASzOzrB-a9E", // Parasite
+  "PHbNz0KeI5I", // The Revenant
+  "d9MyW72ELq0", // Avatar 2
+  "JQ8jGqdE2iw", // Knives Out
+  "Way9Dexny3w", // Bohemian Rhapsody
+  "odM92ap8_c0", // Gravity
+  "NgsQ8mVkN8w", // 1917
+  "LI1sFAPd5FY", // Whiplash
+  "ACjUJQoKeDw", // Spider-Man No Way Home
+  "t433PEQGErc", // Black Panther
+];
+
 const overviews = [
   "A gripping tale of survival and redemption set against a backdrop of unprecedented global change.",
   "When secrets from the past resurface, a family must confront the truth that could tear them apart.",
