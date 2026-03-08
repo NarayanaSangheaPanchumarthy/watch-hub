@@ -293,4 +293,15 @@ const ListCard = ({ item }: { item: Movie }) => (
   </Link>
 );
 
+const LoadMoreButton = ({ onClick, remaining }: { onClick: () => void; remaining: number }) => (
+  <div className="flex justify-center pt-10 pb-4">
+    <button
+      onClick={onClick}
+      className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
+    >
+      Load More ({remaining} remaining)
+    </button>
+  </div>
+);
+
 export default ContentListingPage;
