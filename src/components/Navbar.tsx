@@ -100,7 +100,12 @@ const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
-                    <User className="w-5 h-5" />
+                    <Avatar className="h-7 w-7">
+                      <AvatarImage src={avatarUrl || undefined} alt="Profile" />
+                      <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                        {user.email?.substring(0, 2).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
                     <span className="hidden sm:inline text-sm max-w-[120px] truncate">
                       {user.email}
                     </span>
