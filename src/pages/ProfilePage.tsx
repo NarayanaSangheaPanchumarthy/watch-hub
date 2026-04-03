@@ -151,6 +151,55 @@ const ProfilePage = () => {
             </CardContent>
           </Card>
         )}
+
+        {/* Danger Zone */}
+        <Separator className="my-8" />
+        <Card className="border-destructive/30">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg text-destructive">
+              <Trash2 className="w-5 h-5" />
+              Danger Zone
+            </CardTitle>
+            <CardDescription>
+              Permanently delete your account and all associated data. This action cannot be undone.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive">Delete Account</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete your account and all your data. This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    onClick={async () => {
+                      const { data: { session } } = await supabase.auth.getSession();
+                      if (!session) return;
+                      const { error } = await supabase.functions.invoke("delete-account");
+                      if (error) {
+                        toast({ title: "Error", description: "Failed to delete account. Please try again.", variant: "destructive" });
+                      } else {
+                        await supabase.auth.signOut();
+                        toast({ title: "Account deleted", description: "Your account has been permanently deleted." });
+                        navigate("/");
+                      }
+                    }}
+                  >
+                    Delete Account
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </CardContent>
+        </Card>
       </main>
       <Footer />
     </div>
