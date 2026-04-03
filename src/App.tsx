@@ -15,6 +15,7 @@ import SportsPage from "./pages/SportsPage";
 import WatchlistPage from "./pages/WatchlistPage";
 import AuthPage from "./pages/AuthPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
