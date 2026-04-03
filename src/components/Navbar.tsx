@@ -42,6 +42,12 @@ const Navbar = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (!user?.id) { setAvatarUrl(null); return; }
+    supabase.from("profiles").select("avatar_url").eq("id", user.id).maybeSingle()
+      .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null));
+  }, [user?.id]);
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/");
