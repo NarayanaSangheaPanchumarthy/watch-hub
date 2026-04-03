@@ -37,6 +37,19 @@ const ProfilePage = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  // Fetch avatar
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("profiles")
+      .select("avatar_url")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+      });
+  }, [user]);
+
   const handleUpdatePassword = async () => {
     if (newPassword.length < 6) {
       toast({ title: "Password too short", description: "Must be at least 6 characters.", variant: "destructive" });
