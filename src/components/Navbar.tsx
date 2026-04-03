@@ -25,7 +25,8 @@ const navLinks = [
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [user, setUser] = useState<null | { email?: string }>(null);
+  const [user, setUser] = useState<null | { email?: string; id?: string }>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
