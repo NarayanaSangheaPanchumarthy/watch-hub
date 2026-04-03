@@ -11,6 +11,7 @@ import { ArrowLeft, KeyRound, Mail, Shield, Loader2, Trash2 } from "lucide-react
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AvatarUpload from "@/components/AvatarUpload";
 
 const ProfilePage = () => {
   const [user, setUser] = useState<any>(null);
