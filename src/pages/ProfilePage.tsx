@@ -96,6 +96,24 @@ const ProfilePage = () => {
 
         <h1 className="text-3xl font-display font-bold text-foreground mb-8">Account Settings</h1>
 
+        {/* Avatar */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Profile Photo</CardTitle>
+            <CardDescription>Upload a photo to personalize your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {user && (
+              <AvatarUpload
+                userId={user.id}
+                avatarUrl={avatarUrl}
+                email={user.email}
+                onAvatarChange={setAvatarUrl}
+              />
+            )}
+          </CardContent>
+        </Card>
+
         {/* Account Info */}
         <Card className="mb-6">
           <CardHeader>
