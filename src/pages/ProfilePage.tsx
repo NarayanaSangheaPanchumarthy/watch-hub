@@ -11,6 +11,7 @@ import { ArrowLeft, KeyRound, Mail, Shield, Loader2, Trash2 } from "lucide-react
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AvatarUpload from "@/components/AvatarUpload";
 
 const ProfilePage = () => {
   const [user, setUser] = useState<any>(null);
@@ -18,6 +19,7 @@ const ProfilePage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [updating, setUpdating] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -34,6 +36,19 @@ const ProfilePage = () => {
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  // Fetch avatar
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("profiles")
+      .select("avatar_url")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+      });
+  }, [user]);
 
   const handleUpdatePassword = async () => {
     if (newPassword.length < 6) {
@@ -80,6 +95,24 @@ const ProfilePage = () => {
         </button>
 
         <h1 className="text-3xl font-display font-bold text-foreground mb-8">Account Settings</h1>
+
+        {/* Avatar */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Profile Photo</CardTitle>
+            <CardDescription>Upload a photo to personalize your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {user && (
+              <AvatarUpload
+                userId={user.id}
+                avatarUrl={avatarUrl}
+                email={user.email}
+                onAvatarChange={setAvatarUrl}
+              />
+            )}
+          </CardContent>
+        </Card>
 
         {/* Account Info */}
         <Card className="mb-6">
