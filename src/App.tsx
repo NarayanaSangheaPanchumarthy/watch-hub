@@ -15,6 +15,7 @@ import SportsPage from "./pages/SportsPage";
 import WatchlistPage from "./pages/WatchlistPage";
 import AuthPage from "./pages/AuthPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/watchlist" element={<WatchlistPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/title/:id" element={<ContentDetail />} />
           <Route path="/blog" element={<BlogList />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
