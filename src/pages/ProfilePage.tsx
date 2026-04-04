@@ -20,6 +20,8 @@ const ProfilePage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [updating, setUpdating] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState("");
+  const [savingName, setSavingName] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -42,11 +44,12 @@ const ProfilePage = () => {
     if (!user) return;
     supabase
       .from("profiles")
-      .select("avatar_url")
+      .select("avatar_url, display_name")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
         if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+        if (data?.display_name) setDisplayName(data.display_name);
       });
   }, [user]);
 
@@ -111,6 +114,42 @@ const ProfilePage = () => {
                 onAvatarChange={setAvatarUrl}
               />
             )}
+          </CardContent>
+        </Card>
+
+        {/* Display Name */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Display Name</CardTitle>
+            <CardDescription>Set your public display name</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-3">
+              <Input
+                placeholder="Enter your display name"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="flex-1"
+              />
+              <Button
+                onClick={async () => {
+                  setSavingName(true);
+                  const { error } = await supabase
+                    .from("profiles")
+                    .upsert({ id: user.id, display_name: displayName.trim(), updated_at: new Date().toISOString() });
+                  setSavingName(false);
+                  if (error) {
+                    toast({ title: "Error", description: error.message, variant: "destructive" });
+                  } else {
+                    toast({ title: "Name updated", description: "Your display name has been saved." });
+                  }
+                }}
+                disabled={savingName || !displayName.trim()}
+              >
+                {savingName && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+                Save
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
