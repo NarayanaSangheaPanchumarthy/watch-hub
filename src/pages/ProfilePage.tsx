@@ -20,6 +20,8 @@ const ProfilePage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [updating, setUpdating] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState("");
+  const [savingName, setSavingName] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
