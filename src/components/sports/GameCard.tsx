@@ -40,7 +40,10 @@ const GameCard = ({ game }: { game: Game }) => {
             : "hover:border-primary/20"
         } ${isFinished && game.highlightVideo ? "cursor-pointer" : ""}`}
         onClick={() => {
-          if (isFinished && game.highlightVideo) setShowVideo(true);
+          if (isFinished && game.highlightVideo) {
+            setEmbedError(false);
+            setShowVideo(true);
+          }
         }}
       >
         {/* Top row */}
