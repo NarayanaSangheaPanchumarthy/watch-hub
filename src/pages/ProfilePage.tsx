@@ -44,11 +44,12 @@ const ProfilePage = () => {
     if (!user) return;
     supabase
       .from("profiles")
-      .select("avatar_url")
+      .select("avatar_url, display_name")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
         if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+        if (data?.display_name) setDisplayName(data.display_name);
       });
   }, [user]);
 
