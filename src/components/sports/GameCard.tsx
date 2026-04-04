@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { CheckCircle2, Radio, Tv, Play, X } from "lucide-react";
+import { CheckCircle2, Radio, Tv, Play, X, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Game } from "@/data/sportsData";
 
 const GameCard = ({ game }: { game: Game }) => {
   const [showVideo, setShowVideo] = useState(false);
+  const [embedError, setEmbedError] = useState(false);
   const isLive = game.status === "live";
   const isFinished = game.status === "finished";
 
@@ -39,7 +40,10 @@ const GameCard = ({ game }: { game: Game }) => {
             : "hover:border-primary/20"
         } ${isFinished && game.highlightVideo ? "cursor-pointer" : ""}`}
         onClick={() => {
-          if (isFinished && game.highlightVideo) setShowVideo(true);
+          if (isFinished && game.highlightVideo) {
+            setEmbedError(false);
+            setShowVideo(true);
+          }
         }}
       >
         {/* Top row */}
@@ -214,20 +218,45 @@ const GameCard = ({ game }: { game: Game }) => {
               className="relative w-full max-w-4xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <button
-                onClick={() => setShowVideo(false)}
-                className="absolute -top-10 right-0 p-2 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors z-10"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="absolute -top-10 right-0 flex items-center gap-2 z-10">
+                <button
+                  onClick={() => window.open(`https://www.youtube.com/watch?v=${game.highlightVideo}`, "_blank", "noopener")}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors text-sm"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Watch on YouTube
+                </button>
+                <button
+                  onClick={() => setShowVideo(false)}
+                  className="p-2 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
               <div className="aspect-video bg-card rounded-xl overflow-hidden">
-                <iframe
-                  src={`https://www.youtube.com/embed/${game.highlightVideo}?autoplay=1`}
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  title={game.highlightTitle || "Match Highlights"}
-                />
+                {embedError ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-center px-6">
+                    <p className="text-muted-foreground">
+                      This video can't be embedded. Click below to watch on YouTube.
+                    </p>
+                    <button
+                      onClick={() => window.open(`https://www.youtube.com/watch?v=${game.highlightVideo}`, "_blank", "noopener")}
+                      className="flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                    >
+                      <Play className="w-5 h-5" />
+                      Watch on YouTube
+                    </button>
+                  </div>
+                ) : (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${game.highlightVideo}?autoplay=1`}
+                    className="w-full h-full"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    title={game.highlightTitle || "Match Highlights"}
+                    onError={() => setEmbedError(true)}
+                  />
+                )}
               </div>
               <p className="text-center text-sm text-muted-foreground mt-3">
                 {game.highlightTitle}
