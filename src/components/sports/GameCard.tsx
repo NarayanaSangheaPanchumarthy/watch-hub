@@ -6,6 +6,7 @@ import type { Game } from "@/data/sportsData";
 
 const GameCard = ({ game }: { game: Game }) => {
   const [showVideo, setShowVideo] = useState(false);
+  const [embedError, setEmbedError] = useState(false);
   const isLive = game.status === "live";
   const isFinished = game.status === "finished";
 
