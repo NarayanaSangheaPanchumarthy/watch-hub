@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, Radio, Tv, Play, X } from "lucide-react";
+import { CheckCircle2, Radio, Tv, Play, X, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Game } from "@/data/sportsData";
