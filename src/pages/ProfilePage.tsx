@@ -117,6 +117,42 @@ const ProfilePage = () => {
           </CardContent>
         </Card>
 
+        {/* Display Name */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Display Name</CardTitle>
+            <CardDescription>Set your public display name</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-3">
+              <Input
+                placeholder="Enter your display name"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="flex-1"
+              />
+              <Button
+                onClick={async () => {
+                  setSavingName(true);
+                  const { error } = await supabase
+                    .from("profiles")
+                    .upsert({ id: user.id, display_name: displayName.trim(), updated_at: new Date().toISOString() });
+                  setSavingName(false);
+                  if (error) {
+                    toast({ title: "Error", description: error.message, variant: "destructive" });
+                  } else {
+                    toast({ title: "Name updated", description: "Your display name has been saved." });
+                  }
+                }}
+                disabled={savingName || !displayName.trim()}
+              >
+                {savingName && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+                Save
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Account Info */}
         <Card className="mb-6">
           <CardHeader>
