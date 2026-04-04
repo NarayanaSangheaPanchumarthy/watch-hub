@@ -1,8 +1,6 @@
-import { useRef } from "react";
-import { Play, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Play, ChevronLeft, ChevronRight, X, ExternalLink } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
 import type { Game } from "@/data/sportsData";
 
 interface HighlightsSectionProps {
@@ -12,6 +10,7 @@ interface HighlightsSectionProps {
 const HighlightsSection = ({ highlights }: HighlightsSectionProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeVideo, setActiveVideo] = useState<Game | null>(null);
+  const [embedError, setEmbedError] = useState(false);
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -19,6 +18,10 @@ const HighlightsSection = ({ highlights }: HighlightsSectionProps) => {
       left: dir === "left" ? -340 : 340,
       behavior: "smooth",
     });
+  };
+
+  const openOnYouTube = (videoId: string) => {
+    window.open(`https://www.youtube.com/watch?v=${videoId}`, "_blank", "noopener");
   };
 
   if (highlights.length === 0) return null;
@@ -33,7 +36,7 @@ const HighlightsSection = ({ highlights }: HighlightsSectionProps) => {
               Featured Highlights
             </h2>
             <p className="text-xs text-muted-foreground mt-1">
-              Click to watch full match highlights on YouTube
+              Click to watch full match highlights
             </p>
           </div>
           <div className="flex gap-1">
@@ -59,7 +62,10 @@ const HighlightsSection = ({ highlights }: HighlightsSectionProps) => {
           {highlights.map((game) => (
             <button
               key={game.id}
-              onClick={() => setActiveVideo(game)}
+              onClick={() => {
+                setEmbedError(false);
+                setActiveVideo(game);
+              }}
               className="flex-shrink-0 w-[300px] md:w-[340px] group text-left"
             >
               <div className="relative rounded-xl overflow-hidden mb-2">
@@ -109,20 +115,45 @@ const HighlightsSection = ({ highlights }: HighlightsSectionProps) => {
               className="relative w-full max-w-4xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <button
-                onClick={() => setActiveVideo(null)}
-                className="absolute -top-10 right-0 p-2 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors z-10"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="absolute -top-10 right-0 flex items-center gap-2 z-10">
+                <button
+                  onClick={() => openOnYouTube(activeVideo.highlightVideo!)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors text-sm"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Watch on YouTube
+                </button>
+                <button
+                  onClick={() => setActiveVideo(null)}
+                  className="p-2 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
               <div className="aspect-video bg-card rounded-xl overflow-hidden">
-                <iframe
-                  src={`https://www.youtube.com/embed/${activeVideo.highlightVideo}?autoplay=1`}
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  title={activeVideo.highlightTitle || "Match Highlights"}
-                />
+                {embedError ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-center px-6">
+                    <p className="text-muted-foreground">
+                      This video can't be embedded. Click below to watch on YouTube.
+                    </p>
+                    <button
+                      onClick={() => openOnYouTube(activeVideo.highlightVideo!)}
+                      className="flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                    >
+                      <Play className="w-5 h-5" />
+                      Watch on YouTube
+                    </button>
+                  </div>
+                ) : (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${activeVideo.highlightVideo}?autoplay=1`}
+                    className="w-full h-full"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    title={activeVideo.highlightTitle || "Match Highlights"}
+                    onError={() => setEmbedError(true)}
+                  />
+                )}
               </div>
               <p className="text-center text-sm text-muted-foreground mt-3">
                 {activeVideo.highlightTitle}
