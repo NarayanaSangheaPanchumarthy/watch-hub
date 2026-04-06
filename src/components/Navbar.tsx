@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark, User, LogOut, LogIn } from "lucide-react";
+import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark, User, LogOut, LogIn, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import GlobalSearch from "@/components/GlobalSearch";
@@ -27,6 +27,7 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [user, setUser] = useState<null | { email?: string; id?: string }>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -43,9 +44,11 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (!user?.id) { setAvatarUrl(null); return; }
+    if (!user?.id) { setAvatarUrl(null); setIsAdmin(false); return; }
     supabase.from("profiles").select("avatar_url").eq("id", user.id).maybeSingle()
       .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null));
+    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
+      .then(({ data }) => setIsAdmin((data?.length ?? 0) > 0));
   }, [user?.id]);
 
   const handleSignOut = async () => {
@@ -117,6 +120,12 @@ const Navbar = () => {
                     <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
                   <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <DropdownMenuItem onClick={() => navigate("/admin")} className="cursor-pointer">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Admin Panel
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={() => navigate("/profile")} className="cursor-pointer">
                     <User className="w-4 h-4 mr-2" />
                     Account Settings
