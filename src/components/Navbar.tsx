@@ -44,9 +44,11 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (!user?.id) { setAvatarUrl(null); return; }
+    if (!user?.id) { setAvatarUrl(null); setIsAdmin(false); return; }
     supabase.from("profiles").select("avatar_url").eq("id", user.id).maybeSingle()
       .then(({ data }) => setAvatarUrl(data?.avatar_url ?? null));
+    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
+      .then(({ data }) => setIsAdmin((data?.length ?? 0) > 0));
   }, [user?.id]);
 
   const handleSignOut = async () => {
