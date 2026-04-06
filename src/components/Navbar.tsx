@@ -27,6 +27,7 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [user, setUser] = useState<null | { email?: string; id?: string }>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
