@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -22,8 +22,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown } from "lucide-react";
+import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown, TrendingUp, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, PieChart, Pie, Cell, AreaChart, Area, ResponsiveContainer } from "recharts";
 
 interface AdminUser {
   id: string;
