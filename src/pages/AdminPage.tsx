@@ -185,8 +185,8 @@ const AnalyticsSection = ({ users }: { users: AdminUser[] }) => {
   );
 };
 
-
-  const AdminPage = () => {
+const AdminPage = () => {
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
