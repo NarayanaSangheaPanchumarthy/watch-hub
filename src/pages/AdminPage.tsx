@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown, TrendingUp, Users } from "lucide-react";
+import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown, TrendingUp, Users, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   ChartContainer,
@@ -314,6 +314,27 @@ const AdminPage = () => {
     );
   }
 
+  const exportCSV = () => {
+    const headers = ["Email", "Display Name", "Status", "Roles", "Joined", "Last Sign In"];
+    const rows = users.map((u) => [
+      u.email,
+      u.display_name || "",
+      u.is_approved ? "Approved" : "Pending",
+      u.roles.join("; ") || "None",
+      new Date(u.created_at).toISOString(),
+      u.last_sign_in_at ? new Date(u.last_sign_in_at).toISOString() : "Never",
+    ]);
+    const csv = [headers, ...rows].map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `users-export-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "CSV exported", description: `${users.length} users exported` });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -326,10 +347,16 @@ const AdminPage = () => {
               <p className="text-muted-foreground">Manage users, approvals, and roles</p>
             </div>
           </div>
-          <Button variant="outline" onClick={loadUsers} className="gap-2">
-            <RefreshCw className="w-4 h-4" />
-            Refresh
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={exportCSV} className="gap-2">
+              <Download className="w-4 h-4" />
+              Export CSV
+            </Button>
+            <Button variant="outline" onClick={loadUsers} className="gap-2">
+              <RefreshCw className="w-4 h-4" />
+              Refresh
+            </Button>
+          </div>
         </div>
 
         {/* Stats */}
