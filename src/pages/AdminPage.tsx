@@ -227,6 +227,9 @@ const AdminPage = () => {
           </Card>
         </div>
 
+        {/* Analytics Charts */}
+        <AnalyticsSection users={users} />
+
         {/* Users Table */}
         <Card>
           <CardHeader>
