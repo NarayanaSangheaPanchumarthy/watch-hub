@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -22,8 +22,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown } from "lucide-react";
+import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown, TrendingUp, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, PieChart, Pie, Cell, AreaChart, Area, ResponsiveContainer } from "recharts";
 
 interface AdminUser {
   id: string;
@@ -36,6 +42,148 @@ interface AdminUser {
   is_approved: boolean;
   roles: string[];
 }
+
+const CHART_COLORS = [
+  "hsl(var(--primary))",
+  "hsl(var(--destructive))",
+  "hsl(var(--accent))",
+  "hsl(var(--muted))",
+];
+
+const signupChartConfig = {
+  signups: { label: "Signups", color: "hsl(var(--primary))" },
+};
+
+const roleChartConfig = {
+  admin: { label: "Admin", color: "hsl(var(--primary))" },
+  moderator: { label: "Moderator", color: "hsl(var(--accent))" },
+  user: { label: "User", color: "hsl(var(--muted-foreground))" },
+  none: { label: "No Role", color: "hsl(var(--muted))" },
+};
+
+const statusChartConfig = {
+  approved: { label: "Approved", color: "hsl(var(--primary))" },
+  pending: { label: "Pending", color: "hsl(var(--destructive))" },
+};
+
+const AnalyticsSection = ({ users }: { users: AdminUser[] }) => {
+  const signupData = useMemo(() => {
+    const grouped: Record<string, number> = {};
+    users.forEach((u) => {
+      const date = new Date(u.created_at);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      grouped[key] = (grouped[key] || 0) + 1;
+    });
+    return Object.entries(grouped)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([month, signups]) => ({ month, signups }));
+  }, [users]);
+
+  const roleData = useMemo(() => {
+    const counts: Record<string, number> = { admin: 0, moderator: 0, user: 0, none: 0 };
+    users.forEach((u) => {
+      if (u.roles.length === 0) counts.none++;
+      else u.roles.forEach((r) => { if (counts[r] !== undefined) counts[r]++; });
+    });
+    return Object.entries(counts)
+      .filter(([, v]) => v > 0)
+      .map(([name, value]) => ({ name, value }));
+  }, [users]);
+
+  const statusData = useMemo(() => [
+    { name: "approved", value: users.filter((u) => u.is_approved).length },
+    { name: "pending", value: users.filter((u) => !u.is_approved).length },
+  ].filter((d) => d.value > 0), [users]);
+
+  if (users.length === 0) return null;
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+      {/* Signups Over Time */}
+      <Card className="lg:col-span-2">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-primary" />
+            <CardTitle className="text-base">User Signups Over Time</CardTitle>
+          </div>
+          <CardDescription>{users.length} total signups</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={signupChartConfig} className="h-[220px] w-full">
+            <AreaChart data={signupData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+              <XAxis dataKey="month" tick={{ fontSize: 11 }} className="fill-muted-foreground" />
+              <YAxis allowDecimals={false} tick={{ fontSize: 11 }} className="fill-muted-foreground" />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <defs>
+                <linearGradient id="signupGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <Area
+                type="monotone"
+                dataKey="signups"
+                stroke="hsl(var(--primary))"
+                fill="url(#signupGradient)"
+                strokeWidth={2}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
+      {/* Role & Status Distribution */}
+      <div className="flex flex-col gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center gap-2">
+              <Crown className="w-4 h-4 text-primary" />
+              <CardTitle className="text-base">Roles</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={roleChartConfig} className="h-[90px] w-full">
+              <BarChart data={roleData} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
+                <XAxis type="number" hide />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={70} className="fill-muted-foreground capitalize" />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                  {roleData.map((entry, i) => (
+                    <Cell key={entry.name} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-primary" />
+              <CardTitle className="text-base">Approval Status</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              {statusData.map((s) => (
+                <div key={s.name} className="flex items-center gap-2">
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: statusChartConfig[s.name as keyof typeof statusChartConfig]?.color }}
+                  />
+                  <span className="text-sm text-muted-foreground capitalize">{s.name}</span>
+                  <span className="text-lg font-bold text-foreground">{s.value}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
 
 const AdminPage = () => {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -220,6 +368,9 @@ const AdminPage = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Analytics Charts */}
+        <AnalyticsSection users={users} />
 
         {/* Users Table */}
         <Card>
