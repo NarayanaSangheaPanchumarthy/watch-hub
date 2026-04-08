@@ -22,7 +22,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown, TrendingUp, Users, Download } from "lucide-react";
+import { Shield, ShieldCheck, ShieldX, UserCheck, UserX, RefreshCw, Crown, TrendingUp, Users, Download, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import {
   ChartContainer,
