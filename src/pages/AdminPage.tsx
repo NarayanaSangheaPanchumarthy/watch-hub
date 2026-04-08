@@ -191,8 +191,26 @@ const AdminPage = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const filteredUsers = useMemo(() => {
+    return users.filter((u) => {
+      const matchesSearch = searchQuery === "" ||
+        u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (u.display_name?.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesRole = roleFilter === "all" ||
+        (roleFilter === "none" && u.roles.length === 0) ||
+        u.roles.includes(roleFilter);
+      const matchesStatus = statusFilter === "all" ||
+        (statusFilter === "approved" && u.is_approved) ||
+        (statusFilter === "pending" && !u.is_approved);
+      return matchesSearch && matchesRole && matchesStatus;
+    });
+  }, [users, searchQuery, roleFilter, statusFilter]);
 
   useEffect(() => {
     checkAdminAndLoad();
