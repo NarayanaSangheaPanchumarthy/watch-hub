@@ -1657,6 +1657,21 @@ export const allGenres = [...new Set(allContent.flatMap(m => m.genres))].sort();
 export const allProviderNames = [...new Set(allContent.flatMap(m => m.providers.map(p => p.name)))].sort();
 export const allYears = [...new Set(allContent.map(m => m.year))].sort((a, b) => b - a);
 
+// Genre-specific collections
+const byGenre = (genre: string) => allContent.filter(m => m.genres.includes(genre)).sort((a, b) => b.rating - a.rating);
+export const horrorPicks = byGenre("Horror");
+export const comedyPicks = byGenre("Comedy");
+export const romancePicks = byGenre("Romance");
+export const sciFiPicks = byGenre("Sci-Fi");
+export const thrillerPicks = byGenre("Thriller");
+export const actionPicks = byGenre("Action");
+export const dramaPicks = byGenre("Drama");
+export const adventurePicks = byGenre("Adventure");
+export const topRatedMovies = [...allMovies].sort((a, b) => b.rating - a.rating).slice(0, 10);
+export const topRatedShows = [...allShows].sort((a, b) => b.rating - a.rating).slice(0, 10);
+export const newReleases = [...allContent].sort((a, b) => b.year - a.year).slice(0, 10);
+export const freeToWatch = allContent.filter(m => m.providers.some(p => p.name === "YouTube"));
+
 // ─── Countries ─────────────────────────────────────────────────────────────────
 
 export const countries: Country[] = [
