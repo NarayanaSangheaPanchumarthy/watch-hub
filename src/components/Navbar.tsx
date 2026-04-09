@@ -20,6 +20,7 @@ const navLinks = [
   { label: "Sports", path: "/sports", icon: Trophy },
   { label: "Watchlist", path: "/watchlist", icon: Bookmark },
   { label: "Blog", path: "/blog", icon: BookOpen },
+  { label: "About", path: "/about", icon: Info },
 ];
 
 const Navbar = () => {
