@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import ContentCard from "./ContentCard";
 import type { Movie } from "@/data/mockData";
 
@@ -7,6 +8,7 @@ interface ContentCarouselProps {
   title: string;
   items: Movie[];
   ranked?: boolean;
+  linkTo?: string;
 }
 
 const ContentCarousel = ({ title, items, ranked }: ContentCarouselProps) => {
