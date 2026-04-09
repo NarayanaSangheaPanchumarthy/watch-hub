@@ -16,11 +16,13 @@ interface ContentListingPageProps {
 const ITEMS_PER_PAGE = 24;
 
 const ContentListingPage = ({ type }: ContentListingPageProps) => {
+  const [searchParams] = useSearchParams();
+  const genreParam = searchParams.get("genre");
   const items = type === "movie" ? allMovies : allShows;
   const title = type === "movie" ? "Movies" : "TV Shows";
   const Icon = type === "movie" ? Film : Tv;
 
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(genreParam ? [genreParam] : []);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
   const [minRating, setMinRating] = useState(0);

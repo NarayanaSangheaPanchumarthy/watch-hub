@@ -11,7 +11,7 @@ interface ContentCarouselProps {
   linkTo?: string;
 }
 
-const ContentCarousel = ({ title, items, ranked }: ContentCarouselProps) => {
+const ContentCarousel = ({ title, items, ranked, linkTo }: ContentCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
@@ -24,7 +24,13 @@ const ContentCarousel = ({ title, items, ranked }: ContentCarouselProps) => {
     <section className="py-6">
       <div className="container">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">{title}</h2>
+          {linkTo ? (
+            <Link to={linkTo} className="font-display text-xl md:text-2xl font-bold text-foreground hover:text-primary transition-colors">
+              {title} →
+            </Link>
+          ) : (
+            <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">{title}</h2>
+          )}
           <div className="flex items-center gap-1">
             <button
               onClick={() => scroll("left")}
