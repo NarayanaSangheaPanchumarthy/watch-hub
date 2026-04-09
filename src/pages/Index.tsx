@@ -28,24 +28,24 @@ const Index = () => {
         <HeroSection />
 
         {/* Top Rated */}
-        <ContentCarousel title="🏆 Top 10 Movies" items={topRatedMovies} ranked />
-        <ContentCarousel title="📺 Top Rated TV Shows" items={topRatedShows} ranked />
+        <ContentCarousel title="🏆 Top 10 Movies" items={topRatedMovies} ranked linkTo="/movies" />
+        <ContentCarousel title="📺 Top Rated TV Shows" items={topRatedShows} ranked linkTo="/shows" />
 
         {/* Genre Rows */}
-        <ContentCarousel title="🎃 Horror" items={horrorPicks} />
-        <ContentCarousel title="😂 Comedy" items={comedyPicks} />
-        <ContentCarousel title="💕 Romance" items={romancePicks} />
-        <ContentCarousel title="🚀 Sci-Fi & Fiction" items={sciFiPicks} />
-        <ContentCarousel title="🔪 Thrillers" items={thrillerPicks} />
-        <ContentCarousel title="💥 Action" items={actionPicks} />
+        <ContentCarousel title="🎃 Horror" items={horrorPicks} linkTo="/movies?genre=Horror" />
+        <ContentCarousel title="😂 Comedy" items={comedyPicks} linkTo="/movies?genre=Comedy" />
+        <ContentCarousel title="💕 Romance" items={romancePicks} linkTo="/movies?genre=Romance" />
+        <ContentCarousel title="🚀 Sci-Fi & Fiction" items={sciFiPicks} linkTo="/movies?genre=Science Fiction" />
+        <ContentCarousel title="🔪 Thrillers" items={thrillerPicks} linkTo="/movies?genre=Thriller" />
+        <ContentCarousel title="💥 Action" items={actionPicks} linkTo="/movies?genre=Action" />
 
         {/* Discovery */}
-        <ContentCarousel title="🆕 New Releases" items={newReleases} />
-        <ContentCarousel title="▶️ Free to Watch" items={freeToWatch} />
+        <ContentCarousel title="🆕 New Releases" items={newReleases} linkTo="/movies" />
+        <ContentCarousel title="▶️ Free to Watch" items={freeToWatch} linkTo="/movies" />
 
         {/* Trending */}
-        <ContentCarousel title="🔥 Trending Movies" items={trendingMovies} />
-        <ContentCarousel title="📡 Trending TV Shows" items={trendingShows} />
+        <ContentCarousel title="🔥 Trending Movies" items={trendingMovies} linkTo="/movies" />
+        <ContentCarousel title="📡 Trending TV Shows" items={trendingShows} linkTo="/shows" />
 
         <SportsHub />
         <CTASection />
