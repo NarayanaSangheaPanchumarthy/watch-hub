@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark, User, LogOut, LogIn, Shield } from "lucide-react";
+import { Search, Menu, X, Film, Tv, Trophy, BookOpen, Bookmark, User, LogOut, LogIn, Shield, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import GlobalSearch from "@/components/GlobalSearch";
