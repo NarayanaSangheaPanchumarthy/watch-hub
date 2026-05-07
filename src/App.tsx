@@ -18,6 +18,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/AdminPage";
+import AdminMessagesPage from "./pages/AdminMessagesPage";
 import AboutPage from "./pages/AboutPage";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/author/:id" element={<AuthorPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/messages" element={<AdminMessagesPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
