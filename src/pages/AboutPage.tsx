@@ -1,5 +1,7 @@
-import { Info, HelpCircle, Film, Tv, Trophy, Globe } from "lucide-react";
+import { Info, HelpCircle, Film, Tv, Trophy, Globe, Mail, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { z } from "zod";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
@@ -8,6 +10,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  subject: z.enum(["feedback", "bug", "content", "other"]),
+  message: z.string().trim().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
+});
 
 const features = [
   { icon: Film, title: "Movies", desc: "Browse thousands of titles across every genre" },
