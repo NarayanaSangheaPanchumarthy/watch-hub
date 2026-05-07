@@ -61,7 +61,36 @@ const faqs = [
   },
 ];
 
-const AboutPage = () => (
+const AboutPage = () => {
+  const [form, setForm] = useState({ name: "", email: "", subject: "feedback", message: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        if (issue.path[0]) fieldErrors[issue.path[0] as string] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+    setErrors({});
+    setSubmitting(true);
+    // Simulate submission
+    setTimeout(() => {
+      toast({
+        title: "Message sent!",
+        description: "Thanks for reaching out. We'll get back to you soon.",
+      });
+      setForm({ name: "", email: "", subject: "feedback", message: "" });
+      setSubmitting(false);
+    }, 600);
+  };
+
+  return (
   <div className="min-h-screen bg-background">
     <Navbar />
     <main className="container py-12 md:py-20 space-y-16">
