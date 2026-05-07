@@ -18,6 +18,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import AdminPage from "./pages/AdminPage";
+import AdminMessagesPage from "./pages/AdminMessagesPage";
 import AboutPage from "./pages/AboutPage";
 
 const queryClient = new QueryClient();
