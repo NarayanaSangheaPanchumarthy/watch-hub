@@ -158,9 +158,88 @@ const AboutPage = () => {
           ))}
         </Accordion>
       </motion.section>
+
+      {/* Contact Form */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+        className="max-w-2xl mx-auto space-y-6"
+      >
+        <div className="flex items-center gap-2 justify-center">
+          <Mail className="w-5 h-5 text-primary" />
+          <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground">
+            Get in Touch
+          </h2>
+        </div>
+        <p className="text-center text-muted-foreground">
+          Have feedback or found an issue? We'd love to hear from you.
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-4 p-6 rounded-xl bg-card border border-border">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                maxLength={100}
+                placeholder="Your name"
+              />
+              {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                maxLength={255}
+                placeholder="you@example.com"
+              />
+              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="subject">Subject</Label>
+            <select
+              id="subject"
+              value={form.subject}
+              onChange={(e) => setForm({ ...form, subject: e.target.value })}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <option value="feedback">General Feedback</option>
+              <option value="bug">Report a Bug</option>
+              <option value="content">Content Issue</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea
+              id="message"
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              maxLength={1000}
+              rows={5}
+              placeholder="Tell us what's on your mind..."
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              {errors.message ? <p className="text-destructive">{errors.message}</p> : <span />}
+              <span>{form.message.length}/1000</span>
+            </div>
+          </div>
+          <Button type="submit" disabled={submitting} className="w-full">
+            <Send className="w-4 h-4" />
+            {submitting ? "Sending..." : "Send Message"}
+          </Button>
+        </form>
+      </motion.section>
     </main>
     <Footer />
   </div>
-);
+  );
+};
 
 export default AboutPage;
