@@ -67,7 +67,7 @@ const AboutPage = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
@@ -80,15 +80,26 @@ const AboutPage = () => {
     }
     setErrors({});
     setSubmitting(true);
-    // Simulate submission
-    setTimeout(() => {
+    try {
+      const { error } = await supabase.functions.invoke("submit-contact", {
+        body: result.data,
+      });
+      if (error) throw error;
       toast({
         title: "Message sent!",
         description: "Thanks for reaching out. We'll get back to you soon.",
       });
       setForm({ name: "", email: "", subject: "feedback", message: "" });
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Couldn't send message",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setSubmitting(false);
-    }, 600);
+    }
   };
 
   return (
