@@ -14,8 +14,12 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["DM Sans", "sans-serif"],
         display: ["Space Grotesk", "sans-serif"],
+      },
+      boxShadow: {
+        cinema: "0 30px 80px -30px hsl(var(--primary) / 0.35), 0 10px 30px -10px hsl(0 0% 0% / 0.5)",
+        "card-hover": "0 20px 50px -20px hsl(var(--primary) / 0.45)",
       },
       colors: {
         border: "hsl(var(--border))",
